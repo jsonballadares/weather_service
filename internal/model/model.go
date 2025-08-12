@@ -34,7 +34,8 @@ type ForecastResponse struct {
 	} `json:"properties"`
 }
 
-// WeatherResponse
+// WeatherResponse this is the goal of this project!
+// Forecast will be the "shortForecast" & Category will be the "Characterization of the weather"
 type WeatherResponse struct {
 	Forecast string `json:"forecast"`
 	Category string `json:"temperature_category"`
