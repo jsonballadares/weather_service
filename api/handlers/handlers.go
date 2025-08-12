@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/jasonballadares/weather_service/internal/env"
 	"github.com/jasonballadares/weather_service/internal/model"
@@ -119,6 +120,7 @@ func extractAndValidateRequest(w http.ResponseWriter, r *http.Request) (*model.C
 	latitude := r.URL.Query().Get("latitude")
 	longitude := r.URL.Query().Get("longitude")
 
+	// validate
 	if latitude == "" {
 		http.Error(w, "Please provide a latitude", http.StatusBadRequest)
 		return nil, fmt.Errorf("validation error: client did not supply latitude")
@@ -129,6 +131,29 @@ func extractAndValidateRequest(w http.ResponseWriter, r *http.Request) (*model.C
 		return nil, fmt.Errorf("validation error: client did not supply longitude")
 	}
 
+	// Parse latitude
+	latFloat, err := strconv.ParseFloat(latitude, 64)
+	if err != nil {
+		http.Error(w, "Invalid latitude format", http.StatusBadRequest)
+		return nil, fmt.Errorf("validation error: latitude is not a valid float")
+	}
+	if latFloat < -90 || latFloat > 90 {
+		http.Error(w, "Latitude must be between -90 and 90", http.StatusBadRequest)
+		return nil, fmt.Errorf("validation error: latitude out of range")
+	}
+
+	// Parse longitude
+	lonFloat, err := strconv.ParseFloat(longitude, 64)
+	if err != nil {
+		http.Error(w, "Invalid longitude format", http.StatusBadRequest)
+		return nil, fmt.Errorf("validation error: longitude is not a valid float")
+	}
+	if lonFloat < -180 || lonFloat > 180 {
+		http.Error(w, "Longitude must be between -180 and 180", http.StatusBadRequest)
+		return nil, fmt.Errorf("validation error: longitude out of range")
+	}
+
+	// successfully validated
 	coordinates := &model.Coordinates{
 		Latitude:  latitude,
 		Longitude: longitude,
