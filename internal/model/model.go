@@ -20,23 +20,29 @@ type PointsResponse struct {
 }
 
 // ForecastResponse the meat and potatoes of this project as we need the shortForecast as well as the temperature of the
-// first Period to Characterize it as hot, cold, moderate. The one that's named "Today" based on docs should be the first
-// period returned and if not we can always do some search / sort to guarantee that but will be assuming it is
-// the ForecastResponse.Properties.Periods[0] for the sake of simplicity
+// first Period to Characterize it as hot, cold, moderate.
 type ForecastResponse struct {
 	Properties struct {
-		Periods []struct {
-			Name            string  `json:"name"`
-			Temperature     float64 `json:"temperature"`
-			TemperatureUnit string  `json:"temperatureUnit"`
-			ShortForecast   string  `json:"shortForecast"`
-		} `json:"periods"`
+		Periods []Period `json:"periods"`
 	} `json:"properties"`
 }
 
 // WeatherResponse this is the goal of this project!
 // Forecast will be the "shortForecast" & Category will be the "Characterization of the weather"
 type WeatherResponse struct {
-	Forecast string `json:"forecast"`
-	Category string `json:"temperature_category"`
+	ShortForecast               string `json:"shortForecast"`
+	TemperatureCharacterization string `json:"temperatureCharacterization"`
+}
+
+// Coordinates contains Latitude / Longitude given by client
+type Coordinates struct {
+	Latitude  string `json:"latitude"`
+	Longitude string `json:"longitude"`
+}
+
+type Period struct {
+	Name            string  `json:"name"`
+	Temperature     float64 `json:"temperature"`
+	TemperatureUnit string  `json:"temperatureUnit"`
+	ShortForecast   string  `json:"shortForecast"`
 }

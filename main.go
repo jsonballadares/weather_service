@@ -10,7 +10,7 @@ import (
 func main() {
 	e := env.InitEnv()
 
-	r := routers.InitRouter()
+	r := routers.InitRouter(e)
 
 	err := routers.Serve(r, e.Port)
 	if err != nil {

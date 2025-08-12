@@ -12,11 +12,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jasonballadares/weather_service/api/handlers"
+	"github.com/jasonballadares/weather_service/internal/env"
 )
 
-func InitRouter() *chi.Mux {
+func InitRouter(e *env.Env) *chi.Mux {
 	r := chi.NewRouter()
-	r.Get("/weather", handlers.WeatherHandler)
+	r.Get("/shortForecast", handlers.ShortForecast(e))
 	return r
 }
 

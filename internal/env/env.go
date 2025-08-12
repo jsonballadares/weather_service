@@ -1,21 +1,20 @@
 package env
 
-// Base URL: https://api.weather.gov for NWS API
+import "net/http"
 
-import (
-	"fmt"
-)
+// Base URL: https://api.weather.gov for NWS API
 
 type Env struct {
 	Port       string
 	BaseUrlNWS string
+	HttpClient *http.Client
 }
 
 func InitEnv() *Env {
-	fmt.Println("initEnv invoked")
 	e := &Env{
 		Port:       "8080",
 		BaseUrlNWS: "https://api.weather.gov",
+		HttpClient: http.DefaultClient,
 	}
 	return e
 }
